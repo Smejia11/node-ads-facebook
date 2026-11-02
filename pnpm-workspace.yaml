@@ -1,0 +1,39 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Configuración de seguridad de pnpm (cadena de suministro)
+# Varios de estos valores ya son el default en pnpm 11/12; se declaran
+# explícitamente para que nadie los apague sin que se note en el code review.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# 1. Cuarentena de versiones nuevas: no instala nada publicado hace menos de
+#    7 días. La mayoría de paquetes comprometidos se detectan y retiran antes.
+minimumReleaseAge: 10080 # minutos (default en pnpm 11+: 1440 = 1 día)
+# minimumReleaseAgeExclude:
+#   - '@tu-org/*'        # paquetes internos que sí necesitas al día
+
+# 2. Bloquea la instalación si un paquete pierde nivel de confianza
+#    (p. ej. antes se publicaba con provenance/trusted publishing y ahora no:
+#    señal típica de cuenta de maintainer robada).
+trustPolicy: no-downgrade
+trustPolicyExclude:
+  - 'undici-types@6.21.0'   # versión exacta, no el paquete entero
+
+# 3. Scripts de instalación (preinstall/postinstall): ninguno se ejecuta salvo
+#    los que apruebes aquí. strictDepBuilds hace fallar el install si aparece
+#    un script no revisado, en vez de ignorarlo en silencio.
+strictDepBuilds: true
+dangerouslyAllowAllBuilds: false
+allowBuilds: {}
+#   esbuild: true        # ejemplo: solo agregar tras revisar el script
+
+# 4. Sub-dependencias solo desde el registry: nada de git ni tarballs por URL
+#    metidos en dependencias transitivas.
+blockExoticSubdeps: true
+
+# 5. Respeta "engines" (Node/pnpm) y guarda versiones exactas, sin ^ ni ~.
+engineStrict: true
+savePrefix: ''
+
+# 6. Si node_modules no coincide con el lockfile, `pnpm run` falla en vez de
+#    correr con dependencias desconocidas.
+verifyDepsBeforeRun: error
+

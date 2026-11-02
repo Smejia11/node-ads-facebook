@@ -1,0 +1,28 @@
+{
+  // Depuración local. Sin --permission: el Permission Model de Node desactiva el
+  // inspector en silencio y los puntos de interrupción nunca se activan.
+  // Usar solo en tu máquina; los scripts normales siguen corriendo con --permission.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug: dry-run",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--env-file-if-exists=.env", "${workspaceFolder}/src/index.ts", "--dry-run"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Debug: sandbox / producción (.env)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--env-file=.env", "${workspaceFolder}/src/index.ts", "--keep-on-error"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}

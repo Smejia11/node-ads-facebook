@@ -1,0 +1,14 @@
+node_modules/
+
+# Secretos: nunca al repo
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Imágenes locales de prueba
+assets/private/
+
+*.log
+.DS_Store
